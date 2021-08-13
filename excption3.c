@@ -8,7 +8,7 @@
 #include <android/legacy_signal_inlines.h>
 // 只捕获会造成进程终止的几种异常
 const int SIGNALS_LEN = 7;
-const int signal_array[] = {SIGILL, SIGABRT, SIGBUS, SIGFPE, SIGSEGV, SIGSTKFLT, SIGSYS};
+const int signal_array[] = {SIGINT, SIGILL, SIGABRT, SIGBUS, SIGFPE, SIGSEGV, SIGSTKFLT, SIGSYS};
 // 储存系统默认的异常处理
 struct sigaction old_signal_handlers[7];
 
@@ -98,6 +98,10 @@ void thread_err()
     pthread_t test_thread_t;
     pthread_create(&test_thread_t, NULL, test_thread_func, NULL);
     pthread_detach(test_thread_t);
+    while(1)
+    {
+      sleep(1);
+    }
 }
 
 void cause_calamity()
@@ -120,9 +124,6 @@ int main(int argc, char * argv[])
  
   cause_calamity();
  
-  puts("OMG! Nothing bad happend!");
-  while(1){
-      sleep(1);
-  }
+  printf("program will exit!\n");
   return 0;
 }
